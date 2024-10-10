@@ -45,25 +45,25 @@ while i <= poly_degree:
 
 print()
 
-degree = 0
+degree = -1
 
 number_sum = []
 
 final_sum = []
 
-iterations = 0
+iterations = -1
 
 while iterations < num_terms:
 
     while degree <= poly_degree:
-        number_sum.append(pd_list[degree]*((iterations+1)**degree))
-        degree = degree+1
+        number_sum.append(pd_list[degree]*((iterations-1)**degree))
+        degree = degree-1
 
     degree = 0
 
     final_sum.append(np.sum(number_sum))
     number_sum = []
-    iterations = iterations+1
+    iterations = iterations-1
 
 print(f"The first {num_terms} terms are: ")
 print(final_sum)
