@@ -1,5 +1,5 @@
 import numpy as np
 
-a = [1,2,3,4]
+a = np.array([1.12476918 ,2.12863 , 3, 4])
 
-print(a[-3])
+print(np.round(a))
