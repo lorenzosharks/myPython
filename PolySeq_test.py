@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+from PIL import Image, ImageTk
 
 import numpy as np
 
@@ -12,25 +15,87 @@ gate3 = False
 
 #------------------------------------------------------------------------
 
+terms = 0
+
+def create():
+    skibidi.destroy()
+    try:        
+        # Create a list to store IntVars for each entry box
+        entry_vars = []
+        value = int(pdegree.get())
+        
+        # This will store references to images to prevent garbage collection
+        images = []
+
+        def render_latex_to_image(latex_code):
+            # Create a figure with transparent background
+            fig = Figure(figsize=(2, 1), facecolor='none', edgecolor='none')
+            ax = fig.add_subplot(111)
+            ax.text(0.5, 0.5, f"${latex_code}$", fontsize=20, ha='center', va='center')
+            ax.axis('off')  # Turn off the axis
+            
+            # Use tight_layout to minimize whitespace
+            fig.tight_layout(pad=0)
+
+            # Create a canvas and draw the figure on it
+            canvas = FigureCanvas(fig)
+            canvas.draw()
+            
+            # Save to a buffer
+            buf = np.frombuffer(canvas.buffer_rgba(), dtype=np.uint8)
+            width, height = canvas.get_width_height()
+            
+            img = buf.reshape(height, width, 4)  # Image is in RGBA format
+            img = Image.fromarray(img, 'RGBA')  # Create an RGBA image
+            
+            return img
+        
+        def display_latex(index):
+            latex_code = rf"a_{index+1}"  # Your LaTeX code here
+            img = render_latex_to_image(latex_code)
+            img = img.resize((100, 50), Image.LANCZOS)  # Resize to desired dimensions
+            img_tk = ImageTk.PhotoImage(img)
+            images.append(img_tk)  # Keep a reference to prevent garbage collection
+            return img_tk
+        
+        for i in range(value):  
+            img_tk = display_latex(i)  # Get the resized image for the label
+            
+            # Create a label with the LaTeX image
+            label = ttk.Label(mainframe, image=img_tk)
+            label.grid(column=1, row=i + 4, sticky=E)
+            
+            # Create a new IntVar for each entry box
+            entry_var = IntVar()
+            entry_vars.append(entry_var)  # Add to the list
+            
+            # Create an entry box next to the label
+            entry = ttk.Entry(mainframe, width=7, textvariable=entry_var)
+            entry.grid(column=2, row=i + 4, sticky=(tk.W, tk.E))
+            
+    except ValueError:
+        pass
+#------------------------------------------------------------------------
+
 root = Tk()
 root.title("Polynomial Sequence")
 
-mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe = ttk.Frame(root)
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
 #------------------------------------------------------------------------
 
-pdegree = StringVar()
+pdegree = IntVar()
 pdegree_entry = ttk.Entry(mainframe, width=7, textvariable=pdegree)
 pdegree_entry.grid(column=2, row=1, sticky=(W, E))
 
-seen = StringVar()
+seen = IntVar()
 seen_entry = ttk.Entry(mainframe, width=7, textvariable=seen)
 seen_entry.grid(column=2, row=2, sticky=(W, E))
 
-nsums = StringVar()
+nsums = IntVar()
 nsums_entry = ttk.Entry(mainframe, width=7, textvariable=nsums)
 nsums_entry.grid(column=2, row=3, sticky=(W, E))
 
@@ -42,7 +107,15 @@ ttk.Label(mainframe, text="Number terms added").grid(column=1, row=3, sticky=W)
 
 #------------------------------------------------------------------------
 
+skibidi = ttk.Button(mainframe, text="Confirm", command=create)
+skibidi.grid(column=3, row=3, sticky=W)
 
+#------------------------------------------------------------------------
+
+for child in mainframe.winfo_children(): 
+    child.grid_configure(padx=5, pady=5)
+
+root.mainloop()
 
 """
 while gate1 == False:
@@ -225,8 +298,3 @@ if poly_degree in avalible_summations:
 else:
     print(f"The sum formulas for {poly_degree} degrees is not implemented yet.")
 """
-
-for child in mainframe.winfo_children(): 
-    child.grid_configure(padx=5, pady=5)
-
-root.mainloop()
