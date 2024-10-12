@@ -1,55 +1,81 @@
-# Karson xu, Honors Precalculus, 10/10/2024
-
-# Assignment 1 Polynomial Sequences
-
-# The program prompts the user to enter the coefficients of the explicit formula
-# of a polynomial sequence , the number of terms they want to see, and 
-# the number of terms they want to sum. It then prints out 
-# the equation, the terms they requested, and if possible,
-# the sum that they requested.
-
-
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
 
 import numpy as np
 
-gate1 = False
+np.set_printoptions(precision = 2, suppress = True)
+
+gate1 = False    
 gate2 = False
 gate3 = False
 
-while gate1 == False and gate2 == False and gate3 == False:
+#------------------------------------------------------------------------
+
+root = Tk()
+root.title("Polynomial Sequence")
+
+mainframe = ttk.Frame(root, padding="3 3 12 12")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+#------------------------------------------------------------------------
+
+pdegree = StringVar()
+pdegree_entry = ttk.Entry(mainframe, width=7, textvariable=pdegree)
+pdegree_entry.grid(column=2, row=1, sticky=(W, E))
+
+seen = StringVar()
+seen_entry = ttk.Entry(mainframe, width=7, textvariable=seen)
+seen_entry.grid(column=2, row=2, sticky=(W, E))
+
+nsums = StringVar()
+nsums_entry = ttk.Entry(mainframe, width=7, textvariable=nsums)
+nsums_entry.grid(column=2, row=3, sticky=(W, E))
+
+#------------------------------------------------------------------------
+
+ttk.Label(mainframe, text="Highest Polynomial Degree").grid(column=1, row=1, sticky=W)
+ttk.Label(mainframe, text="Terms seen").grid(column=1, row=2, sticky=W)
+ttk.Label(mainframe, text="Number terms added").grid(column=1, row=3, sticky=W)
+
+#------------------------------------------------------------------------
+
+
+
+"""
+while gate1 == False:
     try:
-        poly_degree = abs(int(input("What is the degree of the polynomial: ")))
         try:
-
+            poly_degree = abs(int(input("What is the degree of the polynomial: ")))
             gate1 = True
-            
-            try:
-                num_terms = abs(int(input("How many terms do you want to see: ")))
-                try:
-
-                    gate2 = True
-
-                    try:
-                        sum_terms = abs(int(input("How many terms are added in the sum: ")))
-                        try:
-                            
-                            gate3 = True
-                        
-                        except ValueError as ve:
-                            print("Enter a whole number.")
-                    except ValueError as ve:
-                        print("Enter a whole number.")
-                
-                except ValueError as ve:
-                    print("Enter a whole number.")
-            except ValueError as ve:
-                print("Enter a whole number.")
-        
         except ValueError as ve:
             print("Enter a whole number.")
     except ValueError as ve:
         print("Enter a whole number.")
-
+    
+while gate2 == False:
+    try:
+        try:
+            num_terms = abs(int(input("How many terms do you want to see: ")))
+            gate2 = True
+        except ValueError as ve:
+            print("Enter a whole number.")
+    except ValueError as ve:
+        print("Enter a whole number.")
+       
+while gate3 == False: 
+    try:
+        try:
+            sum_terms = abs(int(input("How many terms are added in the sum: ")))
+            gate3 = True
+        except ValueError as ve:
+            print("Enter a whole number.")
+    except ValueError as ve:
+        print("Enter a whole number.")
+    
+#------------------------------------------------------------------------
 
 i=0
 pd_list = []
@@ -74,6 +100,7 @@ while i <= poly_degree:
 
 pd_list = np.array(pd_list)
 
+#------------------------------------------------------------------------
 
 degree = 0
 
@@ -102,6 +129,7 @@ while iterations < a:
 
 final_sum = np.array(final_sum)
 
+#------------------------------------------------------------------------
 
 #Note: NOT stands for number of terms
 
@@ -126,6 +154,7 @@ def cubic_sum(NOT):
 
     return c_sum
 
+#------------------------------------------------------------------------
 
 if poly_degree == 0:
 
@@ -152,6 +181,8 @@ elif poly_degree == 3:
 
     series_sum = term1+term2+term3+term4
 
+#------------------------------------------------------------------------
+
 i = 0
 
 sign = ""
@@ -172,18 +203,30 @@ while i <= poly_degree:
 
 print()
 
+#------------------------------------------------------------------------
+
 if num_terms <= 1:
     grammar = "term"
 else:
     grammar = "terms"
 
+
 print(f"The first {num_terms} {grammar} are: ")
+
 
 print(np.round(final_sum, 2))
 
+
 avalible_summations = [0, 1, 2, 3]
+
 
 if poly_degree in avalible_summations:
     print(f"The sum of the first {sum_terms} terms is {np.round(series_sum, 2)}.")
 else:
     print(f"The sum formulas for {poly_degree} degrees is not implemented yet.")
+"""
+
+for child in mainframe.winfo_children(): 
+    child.grid_configure(padx=5, pady=5)
+
+root.mainloop()
