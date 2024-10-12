@@ -36,15 +36,53 @@
 
 import tkinter as tk
 from tkinter import ttk
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import numpy as np
+from PIL import Image, ImageTk
 
-def on_button_click():
-    # Hide the button when clicked
-    create_button.destroy()
+# Sample data
+sample_list = ["A", "B", "C", "D"]  # Ensure this has enough elements
 
+# Create the main application window
 root = tk.Tk()
-root.title("Button Example")
+mainframe = ttk.Frame(root)
+mainframe.grid(column=0, row=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
-create_button = ttk.Button(root, text="Click Me", command=on_button_click)
-create_button.grid(pady=20)
+def display_latex2(index):
+    # This function should create and return the image for LaTeX
+    latex_code = f"a_{{{index + 1}}}"  # Example LaTeX code
+    fig = Figure(figsize=(2, 1), facecolor='none', edgecolor='none')
+    ax = fig.add_subplot(111)
+    ax.text(0.5, 0.5, f"${latex_code}$", fontsize=20, ha='center', va='center')
+    ax.axis('off')  # Turn off the axis
+    fig.tight_layout(pad=0)
 
+    canvas = FigureCanvas(fig)
+    canvas.draw()
+    
+    buf = np.frombuffer(canvas.buffer_rgba(), dtype=np.uint8)
+    width, height = canvas.get_width_height()
+    img = buf.reshape(height, width, 4)  # Image is in RGBA format
+    img = Image.fromarray(img, 'RGBA')
+    img_tk = ImageTk.PhotoImage(img)  # Convert to PhotoImage
+    return img_tk
+
+def create(value):
+    for i in range(value):
+        img_tk = display_latex2(i)  # Get the resized image for the label
+        
+        # Create a label with the LaTeX image
+        label = ttk.Label(mainframe, image=img_tk)
+        label.image = img_tk  # Keep a reference to avoid garbage collection
+        label.grid(column=i + 1, row=1, sticky=(tk.W, tk.E))  # Adjust row as needed
+        
+        # Create a label behind the label with corresponding text
+        entry_label = ttk.Label(mainframe, text=f"{sample_list[i]}")
+        entry_label.grid(column=i, row=1, sticky=(tk.W, tk.E))  # Adjust row as needed
+
+# Start creating widgets
+create(len(sample_list))
+
+# Run the application
 root.mainloop()

@@ -17,15 +17,36 @@ gate3 = False
 
 terms = 0
 
-def create():
+
+def ctol():
+    # Get the text from the input box (entry widget)
+    input_text = pdegree_entry.get()
+    input_text2 = nseen_entry.get()
+    input_text3 = nsums_entry.get()
+    
+    pdegree_entry.destroy()
+    nseen_entry.destroy()
+    nsums_entry.destroy()
+
+    # Create a new label with the text from the entry
+    pde1 = ttk.Label(mainframe, text=input_text).grid(column=2, row=1, sticky=W)
+    
+    pde2 = ttk.Label(mainframe, text=input_text2).grid(column=2, row=2, sticky=W)
+    
+    pde3 = ttk.Label(mainframe, text=input_text3).grid(column=2, row=3, sticky=W)
+
+def create(*args):
     skibidi.destroy()
     try:        
+        root.unbind("<Return>")
         # Create a list to store IntVars for each entry box
+        global entry_vars
         entry_vars = []
         value = int(pdegree.get())
         
-        # This will store references to images to prevent garbage collection
         images = []
+
+        # This will store references to images to prevent garbage collection
 
         def render_latex_to_image(latex_code):
             # Create a figure with transparent background
@@ -51,12 +72,14 @@ def create():
             return img
         
         def display_latex(index):
-            latex_code = rf"a_{index+1}"  # Your LaTeX code here
+            latex_code = f"a_{{{index}}}"  # Your LaTeX code here
             img = render_latex_to_image(latex_code)
             img = img.resize((100, 50), Image.LANCZOS)  # Resize to desired dimensions
             img_tk = ImageTk.PhotoImage(img)
             images.append(img_tk)  # Keep a reference to prevent garbage collection
             return img_tk
+        
+        eye=0
         
         for i in range(value):  
             img_tk = display_latex(i)  # Get the resized image for the label
@@ -73,8 +96,81 @@ def create():
             entry = ttk.Entry(mainframe, width=7, textvariable=entry_var)
             entry.grid(column=2, row=i + 4, sticky=(tk.W, tk.E))
             
+            eye = eye+1
+        
+        calculation = ttk.Button(mainframe, text="Confirm", command=polynomial_creation)
+        calculation.grid(column=3, row=eye+4, sticky=W)
+
     except ValueError:
         pass
+def two():
+    ctol()
+    create()
+    
+def polynomial_creation():
+    print_entry_vars()
+    polynomial()
+    
+    
+def print_entry_vars():
+    global list
+    list = [entry_var.get() for entry_var in entry_vars]
+    
+def polynomial():
+        # This will store references to images to prevent garbage collection
+        images = []
+        value = int(pdegree.get())
+        label = []
+        images1 = []
+
+        def render_latex_to_image(latex_code):
+            # Create a figure with transparent background
+            fig = Figure(figsize=(2, 1), facecolor='none', edgecolor='none')
+            ax = fig.add_subplot(111)
+            ax.text(0.5, 0.5, f"${latex_code}$", fontsize=20, ha='center', va='center')
+            ax.axis('off')  # Turn off the axis
+             
+            # Use tight_layout to minimize whitespace
+            fig.tight_layout(pad=0)
+
+            # Create a canvas and draw the figure on it
+            canvas = FigureCanvas(fig)
+            canvas.draw()
+            
+            # Save to a buffer
+            buf = np.frombuffer(canvas.buffer_rgba(), dtype=np.uint8)
+            width, height = canvas.get_width_height()
+            
+            img = buf.reshape(height, width, 4)  # Image is in RGBA format
+            img = Image.fromarray(img, 'RGBA')  # Create an RGBA image
+            
+            return img
+            
+        def display_latex2(index):
+            latex_code = f"x^{{{index}}}"  # Your LaTeX code here
+            img = render_latex_to_image(latex_code)
+            img = img.resize((100, 50), Image.LANCZOS)  # Resize to desired dimensions
+            img_tk = ImageTk.PhotoImage(img)
+            images1.append(img_tk)  # Keep a reference to prevent garbage collection
+            return img_tk
+        
+        
+        a = value + 4
+        
+        for i in range(value):  
+
+            # Create an label behind the label
+            entry_label = ttk.Label(mainframe, text=f"{list[i]}")
+            entry_label.grid(column=i, row=a+1, sticky=(tk.W, tk.E))
+            
+            img_tk = display_latex2(i)  # Get the resized image for the label
+            
+            # Create a label with the LaTeX image
+            label = ttk.Label(mainframe, image=img_tk)
+            label.grid(column=i+1, row=a+1, sticky=(W, E))
+            
+        
+        description = ttk.Label(mainframe, text = "This sequence is defined by y =").grid(column=1, row=a, sticky=(W, E))
 #------------------------------------------------------------------------
 
 root = Tk()
@@ -91,9 +187,9 @@ pdegree = IntVar()
 pdegree_entry = ttk.Entry(mainframe, width=7, textvariable=pdegree)
 pdegree_entry.grid(column=2, row=1, sticky=(W, E))
 
-seen = IntVar()
-seen_entry = ttk.Entry(mainframe, width=7, textvariable=seen)
-seen_entry.grid(column=2, row=2, sticky=(W, E))
+nseen = IntVar()
+nseen_entry = ttk.Entry(mainframe, width=7, textvariable=nseen)
+nseen_entry.grid(column=2, row=2, sticky=(W, E))
 
 nsums = IntVar()
 nsums_entry = ttk.Entry(mainframe, width=7, textvariable=nsums)
@@ -107,13 +203,15 @@ ttk.Label(mainframe, text="Number terms added").grid(column=1, row=3, sticky=W)
 
 #------------------------------------------------------------------------
 
-skibidi = ttk.Button(mainframe, text="Confirm", command=create)
+skibidi = ttk.Button(mainframe, text="Confirm", command= two)
 skibidi.grid(column=3, row=3, sticky=W)
 
 #------------------------------------------------------------------------
 
 for child in mainframe.winfo_children(): 
     child.grid_configure(padx=5, pady=5)
+
+root.bind("<Return>", two)
 
 root.mainloop()
 
