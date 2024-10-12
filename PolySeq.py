@@ -9,6 +9,7 @@
 # the sum that they requested.
 
 import numpy as np
+np.set_printoptions(precision = 2, suppress = True)
 
 gate1 = False    
 gate2 = False
@@ -45,6 +46,10 @@ while gate3 == False:
         print("Enter a whole number.")
 
 
+
+
+
+
 i=0
 pd_list = []
 
@@ -67,6 +72,11 @@ while i <= poly_degree:
         proceed2 = False
 
 pd_list = np.array(pd_list)
+
+
+
+
+
 
 
 degree = 0
@@ -97,6 +107,10 @@ while iterations < a:
 final_sum = np.array(final_sum)
 
 
+
+
+
+
 #Note: NOT stands for number of terms
 
 def linear_sum(NOT):
@@ -119,6 +133,10 @@ def cubic_sum(NOT):
     c_sum = top/4
 
     return c_sum
+
+
+
+
 
 
 if poly_degree == 0:
@@ -146,6 +164,10 @@ elif poly_degree == 3:
 
     series_sum = term1+term2+term3+term4
 
+
+
+
+
 i = 0
 
 sign = ""
@@ -166,16 +188,25 @@ while i <= poly_degree:
 
 print()
 
+
+
+
+
+
 if num_terms <= 1:
     grammar = "term"
 else:
     grammar = "terms"
 
+
 print(f"The first {num_terms} {grammar} are: ")
+
 
 print(np.round(final_sum, 2))
 
+
 avalible_summations = [0, 1, 2, 3]
+
 
 if poly_degree in avalible_summations:
     print(f"The sum of the first {sum_terms} terms is {np.round(series_sum, 2)}.")
