@@ -100,7 +100,7 @@ def create(*args):
         
         
         for i in range(value+1):  
-            img_tk = display_latex(i)  # Get the resized image for the label
+            img_tk = display_latex(value-i)  # Get the resized image for the label
             
             # Create a label with the LaTeX image
             label = ttk.Label(mainframe, image=img_tk)
@@ -203,7 +203,7 @@ def polynomial():
             else:
                 sign = "+"
             
-            img_tk = display_latex2(i)  # Get the resized image for the label
+            img_tk = display_latex2(value-i)  # Get the resized image for the label
             
             # Create an label behind the label
             entry_label = ttk.Label(mainframe, text=f" {sign} {abs(list[i])}", image=img_tk, compound="right")
