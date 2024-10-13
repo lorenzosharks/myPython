@@ -44,6 +44,12 @@ def ctol2():
         entry_label = ttk.Label(mainframe, text=entry_value)
         entry_label.grid(column=2, row=i + 5, sticky=(tk.W, tk.E))
 
+
+
+
+# Create the canvas for the separator
+
+
 def create(*args):
     skibidi.destroy()
     global entry_widgets
@@ -89,9 +95,34 @@ def create(*args):
             images.append(img_tk)  # Keep a reference to prevent garbage collection
             return img_tk
         
-        separator_canvas = Canvas(mainframe, height=5, width=200, highlightthickness=0)
-        separator_canvas.grid(column=1, row=4, columnspan=10, sticky=(W, E))
-        separator_canvas.create_line(0, 2, 500, 2, fill="black", width=3)  # Draw the line (y=2 to center it)
+        def resize_canvas(event):
+            # Get the new width of the canvas when resized
+            new_width = event.width
+            # Clear any existing lines on the canvas
+            separator_canvas.delete("all")
+            # Redraw the line with the updated width
+            separator_canvas.create_line(0, 2, new_width, 2, fill="black", width=3)
+        
+        colspan = max([pdegree.get(), nseen.get(), nsums.get()])
+        
+        separator_canvas = Canvas(mainframe, height=5, highlightthickness=0)
+        separator_canvas.grid(column=1, row=4, columnspan=colspan+4, sticky=(tk.W, tk.E))
+
+        # Bind the resize event of the canvas to dynamically redraw the line
+        separator_canvas.bind("<Configure>", resize_canvas)
+
+        # Ensure the column expands with the window
+        mainframe.grid_columnconfigure(1, weight=1)
+
+        # Ensure the window's grid expands
+        root.grid_columnconfigure(0, weight=1)
+        root.grid_rowconfigure(0, weight=1)
+        
+
+        
+        # separator_canvas = Canvas(mainframe, height=5, width=200, highlightthickness=0)
+        # separator_canvas.grid(column=1, row=4, columnspan=colspan, sticky=(W, E))
+        # separator_canvas.create_line(0, 2, separator_canvas.winfo_screenwidth(), 2, fill="black", width=3)  # Draw the line (y=2 to center it)
         
         eye=0
         
@@ -185,9 +216,12 @@ def polynomial():
         
         a = value + 4
         
+        colspan2 = max([pdegree.get(), nseen.get(), nsums.get()])
+        
+        
         separator_canvas = Canvas(mainframe, height=5, width=200, highlightthickness=0)
-        separator_canvas.grid(column=1, row=a+3, columnspan=10, sticky=(W, E))
-        separator_canvas.create_line(0, 2, 500, 2, fill="black", width=3)  # Draw the line (y=2 to center it)
+        separator_canvas.grid(column=1, row=a+3, columnspan=colspan2+4, sticky=(W, E))
+        separator_canvas.create_line(0, 2, separator_canvas.winfo_screenwidth(), 2, fill="black", width=3)  # Draw the line (y=2 to center it)
 
         i2 = 0
         
