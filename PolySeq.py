@@ -87,12 +87,7 @@ final_sum = []
 
 iterations = 0
 
-if sum_terms > num_terms:
-    a = sum_terms
-elif sum_terms <= num_terms:
-    a = num_terms
-
-while iterations < a:
+for iterations in range(num_terms):
 
     while degree <= poly_degree:
         number_sum.append(pd_list[degree]*((iterations+1)**degree))
@@ -141,32 +136,31 @@ def cubic_sum(NOT):
 
 if poly_degree == 0:
 
-    series_sum = num_terms*final_sum[0]
+    series_sum = pd_list[0] * sum_terms
 
 elif poly_degree == 1:
     
-    series_sum = linear_sum(num_terms)
+    term1 = pd_list[0] * sum_terms
+    term2 = pd_list[1] * linear_sum(sum_terms)
+    
+    series_sum = term1 + term2
 
 elif poly_degree == 2:
 
-    term1 = pd_list[0] * num_terms
-    term2 = pd_list[1] * linear_sum(num_terms)
-    term3 = pd_list[2] * quadratic_sum(num_terms)
+    term1 = pd_list[0] * sum_terms
+    term2 = pd_list[1] * linear_sum(sum_terms)
+    term3 = pd_list[2] * quadratic_sum(sum_terms)
 
     series_sum = term1+term2+term3
 
 elif poly_degree == 3:
 
-    term1 = pd_list[0] * num_terms
-    term2 = pd_list[1] * linear_sum(num_terms)
-    term3 = pd_list[2] * quadratic_sum(num_terms)
-    term4 = pd_list[3] * cubic_sum(num_terms)
+    term1 = pd_list[0] * sum_terms
+    term2 = pd_list[1] * linear_sum(sum_terms)
+    term3 = pd_list[2] * quadratic_sum(sum_terms)
+    term4 = pd_list[3] * cubic_sum(sum_terms)
 
     series_sum = term1+term2+term3+term4
-
-
-
-
 
 i = 0
 
@@ -190,8 +184,10 @@ print()
 
 
 
-
-
+if num_terms <= 1:
+    grammar = f" first term is"
+else:
+    grammar = f"first {num_terms} terms are"
 
 if num_terms <= 1:
     grammar = "term"
@@ -199,7 +195,7 @@ else:
     grammar = "terms"
 
 
-print(f"The first {num_terms} {grammar} are: ")
+print(f"The {grammar} ")
 
 
 print(np.round(final_sum, 2))

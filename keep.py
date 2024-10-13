@@ -15,6 +15,7 @@ gate3 = False
 
 #------------------------------------------------------------------------
 
+
 def ctol():
     # Get the text from the input box (entry widget)
     input_text = pdegree_entry.get()
@@ -90,7 +91,7 @@ def create(*args):
             return img_tk
         
         separator_canvas = Canvas(mainframe, height=5, width=200, highlightthickness=0)
-        separator_canvas.grid(column=1, row=4, columnspan=10, sticky=(W, E))
+        separator_canvas.grid(column=1, row=4, columnspan=4, sticky=(W, E))
         separator_canvas.create_line(0, 2, 500, 2, fill="black", width=3)  # Draw the line (y=2 to center it)
         
         eye=0
@@ -99,7 +100,7 @@ def create(*args):
         
         
         
-        for i in range(value+1):  
+        for i in range(value):  
             img_tk = display_latex(i)  # Get the resized image for the label
             
             # Create a label with the LaTeX image
@@ -135,7 +136,6 @@ def polynomial_creation():
     polynomial()
     ctol2()
     term_creation()
-    term_summation()
      
 def print_entry_vars():
     global list
@@ -186,7 +186,7 @@ def polynomial():
         a = value + 4
         
         separator_canvas = Canvas(mainframe, height=5, width=200, highlightthickness=0)
-        separator_canvas.grid(column=1, row=a+3, columnspan=10, sticky=(W, E))
+        separator_canvas.grid(column=1, row=a+3, columnspan=4, sticky=(W, E))
         separator_canvas.create_line(0, 2, 500, 2, fill="black", width=3)  # Draw the line (y=2 to center it)
 
         i2 = 0
@@ -194,7 +194,7 @@ def polynomial():
         
         sign = ""
         
-        for i in range(value+1):  
+        for i in range(value):  
 
             if i == 0 and list[0] >= 0:
                 sign = ""
@@ -218,15 +218,13 @@ def term_creation():
     degree = 0
     number_sum = []
     iterations = 0
-    global final_sum
     final_sum = []
 
     a_2 = value + 4
 
-
     for i in range(nseen.get()):
         
-        for degree in range(int(pdegree.get())+1):
+        for degree in range(int(pdegree.get())):
         
             number_sum.append(list[degree]*((iterations+1)**degree))
             degree = degree + 1
@@ -239,14 +237,6 @@ def term_creation():
         
     thing = ","
         
-    if nseen.get() <= 1:
-        grammar = f" first term is"
-    else:
-        grammar = f"first {nseen.get()} terms are"
-        
-    term_seen = ttk.Label(mainframe, text=f"The {grammar} ")
-    term_seen.grid(column=1, row=a_2+5, sticky=W)
-        
     for i in range(nseen.get()):
         
         if i == nseen.get() - 1:
@@ -255,70 +245,6 @@ def term_creation():
         number_label = ttk.Label(mainframe, text=f"{final_sum[i]}{thing}")
         number_label.grid(column=i+2, row=a_2+5, sticky=W)
 
-def term_summation():
-    
-    a_3 = value + 4
-    
-    avalible_summations = [0, 1, 2, 3]
-    
-    def linear_sum(NOT):
-        top = 1+NOT
-        
-        l_sum = (top/2)*NOT
-    
-        return l_sum
-
-    def quadratic_sum(NOT):
-        top = (NOT)*(NOT+1)*(2*NOT+1)
-    
-        q_sum = top/6
-    
-        return q_sum
-    
-    def cubic_sum(NOT):
-        top = ((NOT**2)+NOT)**2
-    
-        c_sum = top/4
-    
-        return c_sum
-    
-    if pdegree.get() == 0:
-
-        series_sum = nsums.get()*final_sum[0]
-
-    elif pdegree.get() == 1:
-        
-        term1 = list[0] * nsums.get()
-        term2 = list[1] * linear_sum(nsums.get())
-    
-        series_sum = term1 + term2
-    
-    elif pdegree.get() == 2:
-    
-        term1 = list[0] * nsums.get()
-        term2 = list[1] * linear_sum(nsums.get())
-        term3 = list[2] * quadratic_sum(nsums.get())
-    
-        series_sum = term1+term2+term3
-    
-    elif pdegree.get() == 3:
-    
-        term1 = list[0] * nsums.get()
-        term2 = list[1] * linear_sum(nsums.get())
-        term3 = list[2] * quadratic_sum(nsums.get())
-        term4 = list[3] * cubic_sum(nsums.get())
-    
-        series_sum = term1+term2+term3+term4
-        
-    
-    if pdegree.get() in avalible_summations:
-        sum_text = f"The sum of the first {nsums.get()} terms is {np.round(series_sum, 2)}."
-    else:
-        sum_text = f"The sum formulas for {pdegree.get()} degrees is not implemented yet."
-    
-    total_summation = ttk.Label(mainframe, text=sum_text)
-    total_summation.grid(column=1, row= a_3 + 6, sticky=W)
-    
 #------------------------------------------------------------------------
 
 root = Tk()
@@ -363,3 +289,81 @@ for child in mainframe.winfo_children():
 root.bind("<Return>", two)
 
 root.mainloop()
+
+#------------------------------------------------------------------------
+"""
+
+#------------------------------------------------------------------------
+
+#Note: NOT stands for number of terms
+
+def linear_sum(NOT):
+    top = 1+NOT
+    
+    l_sum = (top/2)*NOT
+
+    return l_sum
+
+def quadratic_sum(NOT):
+    top = (NOT)*(NOT+1)*(2*NOT+1)
+
+    q_sum = top/6
+
+    return q_sum
+
+def cubic_sum(NOT):
+    top = ((NOT**2)+NOT)**2
+
+    c_sum = top/4
+
+    return c_sum
+
+#------------------------------------------------------------------------
+
+if poly_degree == 0:
+
+    series_sum = num_terms*final_sum[0]
+
+elif poly_degree == 1:
+    
+    series_sum = linear_sum(num_terms)
+
+elif poly_degree == 2:
+
+    term1 = pd_list[0] * num_terms
+    term2 = pd_list[1] * linear_sum(num_terms)
+    term3 = pd_list[2] * quadratic_sum(num_terms)
+
+    series_sum = term1+term2+term3
+
+elif poly_degree == 3:
+
+    term1 = pd_list[0] * num_terms
+    term2 = pd_list[1] * linear_sum(num_terms)
+    term3 = pd_list[2] * quadratic_sum(num_terms)
+    term4 = pd_list[3] * cubic_sum(num_terms)
+
+    series_sum = term1+term2+term3+term4
+
+#------------------------------------------------------------------------
+
+if num_terms <= 1:
+    grammar = "term"
+else:
+    grammar = "terms"
+
+
+print(f"The first {num_terms} {grammar} are: ")
+
+
+print(np.round(final_sum, 2))
+
+
+avalible_summations = [0, 1, 2, 3]
+
+
+if poly_degree in avalible_summations:
+    print(f"The sum of the first {sum_terms} terms is {np.round(series_sum, 2)}.")
+else:
+    print(f"The sum formulas for {poly_degree} degrees is not implemented yet.")
+"""
