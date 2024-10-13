@@ -45,10 +45,7 @@ while gate3 == False:
     except ValueError as ve:
         print("Enter a whole number.")
 
-
-
-
-
+#------------------------------------------------------------------------
 
 i=0
 pd_list = []
@@ -73,11 +70,7 @@ while i <= poly_degree:
 
 pd_list = np.array(pd_list)
 
-
-
-
-
-
+#------------------------------------------------------------------------
 
 degree = 0
 
@@ -101,10 +94,7 @@ for iterations in range(num_terms):
 
 final_sum = np.array(final_sum)
 
-
-
-
-
+#------------------------------------------------------------------------
 
 #Note: NOT stands for number of terms
 
@@ -129,10 +119,7 @@ def cubic_sum(NOT):
 
     return c_sum
 
-
-
-
-
+#------------------------------------------------------------------------
 
 if poly_degree == 0:
 
@@ -162,6 +149,8 @@ elif poly_degree == 3:
 
     series_sum = term1+term2+term3+term4
 
+#------------------------------------------------------------------------
+
 i = 0
 
 sign = ""
@@ -182,7 +171,7 @@ while i <= poly_degree:
 
 print()
 
-
+#------------------------------------------------------------------------
 
 if num_terms <= 1:
     grammar = f" first term is"
@@ -200,9 +189,9 @@ print(f"The {grammar} ")
 
 print(np.round(final_sum, 2))
 
+#------------------------------------------------------------------------
 
 avalible_summations = [0, 1, 2, 3]
-
 
 if poly_degree in avalible_summations:
     print(f"The sum of the first {sum_terms} terms is {np.round(series_sum, 2)}.")
