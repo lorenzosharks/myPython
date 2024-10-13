@@ -348,7 +348,7 @@ nsums_entry.grid(column=2, row=3, sticky=(W, E))
 
 ttk.Label(mainframe, text="Highest Polynomial Degree").grid(column=1, row=1, sticky=W)
 ttk.Label(mainframe, text="Terms seen").grid(column=1, row=2, sticky=W)
-ttk.Label(mainframe, text="Number terms added").grid(column=1, row=3, sticky=W)
+ttk.Label(mainframe, text="Number of terms added").grid(column=1, row=3, sticky=W)
 
 #------------------------------------------------------------------------
 
