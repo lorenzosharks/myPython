@@ -8,8 +8,16 @@
 # the equation, the terms they requested, and if possible,
 # the sum that they requested.
 
+#------------------------------------------------------------------------
+
+#import function
 import numpy as np
+
+#Formatting the final answer
 np.set_printoptions(precision = 2, suppress = True)
+
+#------------------------------------------------------------------------
+#Intial Questions
 
 gate1 = False    
 gate2 = False
@@ -47,6 +55,8 @@ while gate3 == False:
 
 #------------------------------------------------------------------------
 
+#Asking the user for each input of the polynomial sequence
+
 i=0
 pd_list = []
 
@@ -71,6 +81,8 @@ while i <= poly_degree:
 pd_list = np.array(pd_list)
 
 #------------------------------------------------------------------------
+
+#Creating each term starting from n = 1
 
 degree = 0
 
@@ -97,6 +109,7 @@ final_sum = np.array(final_sum)
 #------------------------------------------------------------------------
 
 #Note: NOT stands for number of terms
+#Functions for easier writing 
 
 def linear_sum(NOT):
     top = 1+NOT
@@ -119,7 +132,7 @@ def cubic_sum(NOT):
 
     return c_sum
 
-#------------------------------------------------------------------------
+#Efficient calculation "if" statements
 
 if poly_degree == 0:
 
@@ -151,11 +164,13 @@ elif poly_degree == 3:
 
 #------------------------------------------------------------------------
 
+#Sequence definition statements
+
 i = 0
 
 sign = ""
 
-print("This sequence is defined by y =", end="")
+print("This sequence is defined by t_n =", end="")
 
 while i <= poly_degree:
 
@@ -166,12 +181,14 @@ while i <= poly_degree:
     else:
         sign = "+"
 
-    print(f" {sign} {abs(pd_list[i])}x^{i}", end="")
+    print(f" {sign} {abs(pd_list[i])}n^{i}", end="")
     i = i+1
 
 print()
 
 #------------------------------------------------------------------------
+
+#First n terms statement
 
 if num_terms <= 1:
     grammar = f" first term is"
@@ -190,6 +207,8 @@ print(f"The {grammar} ")
 print(np.round(final_sum, 2))
 
 #------------------------------------------------------------------------
+
+#Summation statements
 
 avalible_summations = [0, 1, 2, 3]
 
