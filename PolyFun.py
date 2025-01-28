@@ -65,7 +65,7 @@ def polyToStr(coeff_array):
         else:
             sign = "+"
     
-        polyStr= str(f"{sign} {abs(coeff_array[i])}n^{i}", end="")
+        polyStr= print(f"{sign} {abs(coeff_array[i])}n^{i}", end="")
 
         i = i+1
     
