@@ -7,6 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#Formatting the final answer
+np.set_printoptions(precision = 2, suppress = True)
 
 #Functions
 
@@ -17,7 +19,7 @@ def getCoeffs(poly_degree):
     return: return array of coeffecients
     """
     
-    pd_list = []
+    coeff_array = []
     i=0
     proceed2 = False
 
@@ -34,13 +36,13 @@ def getCoeffs(poly_degree):
                 print("Enter a number.")
         
         if proceed2 == True:
-            pd_list.append(term)
+            coeff_array.append(term)
             i = i+1 
             proceed2 = False
             
-    pd_list = np.array(pd_list)
+    coeff_array = np.array(coeff_array)
             
-    return pd_list
+    return np.array(coeff_array)
 
 def polyToStr(coeff_array):
 
@@ -82,25 +84,17 @@ def polyEval(coeff_array, x_array):
     polyDegree = len(coeff_array)
     
     # exponent = 0
-    i=0
-    input = 0
-    terms = []
-    output = []
     
-    for input in range(len(x_array)):    
-        
-        for i in range(polyDegree):
-            value = x_array[input]**i * coeff_array[i]
-            terms.append(value)
-            i = i + 1
-        
-        output.append(np.sum(terms))
-        
-        i=0
-        terms = []
-        input = input+1   
+    exponents =  np.arange(polyDegree)    
     
-    return np.array(output)
+    pre_terms = np.power(x_array[:, np.newaxis], exponents)
+    pre_terms = np.array(pre_terms)
+
+    terms = pre_terms * coeff_array
+        
+    output = np.sum(terms, axis = 1)
+    
+    return np.array(output) # np.array(output)
 
 def polyDiff(coeff_array):
 
@@ -109,15 +103,12 @@ def polyDiff(coeff_array):
     parameters: coefficient array of original function 
     return: the coefficient array of the derivative
     """
-    position = 0
-    diff_coeff = []
     
-    for position in range(len(coeff_array)):
-        diff_term = coeff_array[position] - 1
-        
-        diff_coeff.append(diff_term)
-        
-        position = position + 1
+    exponents = np.arange(len(coeff_array))
+    position = 0
+    diff_coeff = np.array(coeff_array) * np.array(exponents)
+    
+    diff_coeff = np.delete(diff_coeff, 0)
     
     return np.array(diff_coeff)
 
@@ -125,8 +116,35 @@ def polyDiff(coeff_array):
 
 #Asking the user for the degree of the polynomial
 
-coeff_array = [1,2,3,4]
-x_array = [0, 1, 2, 3]
+flag = False
 
+while flag == False:
+    try:
+        degree = float(input(f"What is the highest degree of the polynomial: "))
+        try:
+            flag = True
+        except ValueError as ve:
+            print("Enter a number.")
+    except ValueError as ve:
+        print("Enter a number.")
+        
+coeff_array = getCoeffs(degree)
+
+
+#The math part
+diff_array = polyDiff(coeff_array)
+
+
+#Display part
+
+print("This is the function:")
 print(polyToStr(coeff_array))
+print("")
+print("This is the derivative function:")
+print(polyToStr(diff_array))
+print("")
+# coeff_array = np.array([1,2,3,4])
+x_array = np.array([0, 1, 2, 3, 4, 5])
+
+print(polyEval(coeff_array, x_array))
 
