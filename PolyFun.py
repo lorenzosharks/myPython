@@ -2,7 +2,6 @@
 """Honors Precalculus: Programming Assignment 2"""
 """This program takes in the coefficients of a polynomial sequence and the degree of the polynomial. It then prints a string representation of the function and its derivative as well as plot both of the functions on a graph. """
 
-
 #Importing functions
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +10,6 @@ import matplotlib.pyplot as plt
 np.set_printoptions(precision = 2, suppress = True)
 
 #Functions
-
 def getCoeffs(poly_degree):
     """
     summary: coefficients of the polynomial
@@ -112,10 +110,12 @@ def polyDiff(coeff_array):
     
     return np.array(diff_coeff)
 
+#--------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------------------------#
+
 #Main program
 
-#Asking the user for the degree of the polynomial
-
+#Asking the user for the degree of the polynomial (Includes user proofing)
 flag = False
 
 while flag == False:
@@ -134,41 +134,43 @@ coeff_array = getCoeffs(degree)
 #The math part
 diff_array = polyDiff(coeff_array)
 
+#--------------------------------------------------------------------------------------------------------#
 
 #Display part
 
-#--------------------------------------------------------------------------------------------------------#
-#plotting
-plt.figure(figsize=(6, 6))
+#plot formatting
+plt.figure(figsize=(6, 6)) #Limit the size of the graph
 
-plt.axhline(0, color = "black", lw = 1)
-plt.axvline(0, color = "black", lw = 1)
+plt.axhline(0, color = "black", lw = 1) # x-axis
+plt.axvline(0, color = "black", lw = 1) # y-axis
 
-plt.grid(True)
+plt.grid(True) #Adds a grid so theres a reference
 
-plt.axis('scaled')
+plt.axis('scaled') #Making the grid look nice
 
-plt.xlim(-10, 10)  # Set the limits of the x-axis
-plt.ylim(-10, 10)
+plt.xlim(-10, 10) # Set the limits of the x-axis
+plt.ylim(-10, 10) # Set the limits of the y-axis
 
-x = np.linspace(-100, 100, 2000000)
 
-y = polyEval(coeff_array, x)
-diffy = polyEval(diff_array, x)
-
-plt.plot(x, y, label = "f(x)", color = "red")
-plt.plot(x, diffy, label = "f'(x)", color = "blue")
-
-plt.xlabel("x")
-
-plt.ylabel("y")
-
+#Lables
+plt.xlabel("x axis") 
+plt.ylabel("y axis")
 plt.title("f(x) and its derivative")
-#--------------------------------------------------------------------------------------------------------#
+
+
+#Actual plotting
+x = np.linspace(-100, 100, 2000000) # Creating an array of the x coordinates
+
+y = polyEval(coeff_array, x) # f(x)
+diffy = polyEval(diff_array, x) # f'(x)
+
+plt.plot(x, y, label = "f(x)", color = "red") # plotting f(x)
+plt.plot(x, diffy, label = "f'(x)", color = "blue") # plotting f'(x)
+
+
 
 
 #Print statements
-
 print("This is the function:")
 print(f"f(x) ={polyToStr(coeff_array)}")
 
@@ -177,7 +179,5 @@ print("")
 print("This is the derivative function:")
 print(f"f'(x) ={polyToStr(diff_array)}")
 
-print("")
-
+plt.legend()
 plt.show()
-
