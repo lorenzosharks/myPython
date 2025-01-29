@@ -57,7 +57,7 @@ def polyToStr(coeff_array):
     
     poly_degree = len(coeff_array) - 1
     
-    polyStr = "f(x) ="
+    polyStr = ""
     
     while i <= poly_degree:
     
@@ -105,12 +105,14 @@ def polyDiff(coeff_array):
     """
     
     exponents = np.arange(len(coeff_array))
-    position = 0
+
     diff_coeff = np.array(coeff_array) * np.array(exponents)
     
     diff_coeff = np.delete(diff_coeff, 0)
     
     return np.array(diff_coeff)
+
+
 
 #Main program
 
@@ -128,8 +130,8 @@ while flag == False:
     except ValueError as ve:
         print("Enter a number.")
         
+             
 coeff_array = getCoeffs(degree)
-
 
 #The math part
 diff_array = polyDiff(coeff_array)
@@ -137,14 +139,50 @@ diff_array = polyDiff(coeff_array)
 
 #Display part
 
+#plotting
+plt.figure(figsize=(6, 6))
+
+plt.axhline(0, color = "black", lw = 1)
+plt.axvline(0, color = "black", lw = 1)
+
+plt.grid(True)
+
+plt.axis('scaled')
+
+plt.xlim(-10, 10)  # Set the limits of the x-axis
+plt.ylim(-10, 10)
+
+x = np.linspace(-10, 10, 2000)
+
+y = polyEval(coeff_array, x)
+diffy = polyEval(diff_array, x)
+
+plt.plot(x, y, label = "f(x)", color = "red")
+plt.plot(x, diffy, label = "f'(x)", color = "blue")
+
+plt.xlabel("x")
+
+plt.ylabel("y")
+
+plt.title("f(x) and its derivative")
+
+
+
+
+
 print("This is the function:")
-print(polyToStr(coeff_array))
+print(f"f(x) ={polyToStr(coeff_array)}")
+
 print("")
+
 print("This is the derivative function:")
-print(polyToStr(diff_array))
+print(f"f'(x) ={polyToStr(diff_array)}")
+
 print("")
-# coeff_array = np.array([1,2,3,4])
+
 x_array = np.array([0, 1, 2, 3, 4, 5])
 
-print(polyEval(coeff_array, x_array))
+print(polyEval(diff_array, x_array))
+
+plt.show()
 
