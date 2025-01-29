@@ -68,7 +68,7 @@ def polyToStr(coeff_array):
         else:
             sign = "+"
     
-        polyStr += f"{sign} {abs(coeff_array[i])}n^{i}" if i == 0 and coeff_array[0] > 0 else f" {sign} {abs(coeff_array[i])}n^{i}"
+        polyStr += f"{sign} {abs(coeff_array[i])}x^{i}" if i == 0 and coeff_array[0] > 0 else f" {sign} {abs(coeff_array[i])}x^{i}"
 
         i = i+1
     
@@ -137,6 +137,7 @@ diff_array = polyDiff(coeff_array)
 
 #Display part
 
+#--------------------------------------------------------------------------------------------------------#
 #plotting
 plt.figure(figsize=(6, 6))
 
@@ -150,7 +151,7 @@ plt.axis('scaled')
 plt.xlim(-10, 10)  # Set the limits of the x-axis
 plt.ylim(-10, 10)
 
-x = np.linspace(-10, 10, 2000)
+x = np.linspace(-1000, 1000, 200000)
 
 y = polyEval(coeff_array, x)
 diffy = polyEval(diff_array, x)
@@ -163,10 +164,10 @@ plt.xlabel("x")
 plt.ylabel("y")
 
 plt.title("f(x) and its derivative")
+#--------------------------------------------------------------------------------------------------------#
 
 
-
-
+#Print statements
 
 print("This is the function:")
 print(f"f(x) ={polyToStr(coeff_array)}")
@@ -177,10 +178,6 @@ print("This is the derivative function:")
 print(f"f'(x) ={polyToStr(diff_array)}")
 
 print("")
-
-x_array = np.array([0, 1, 2, 3, 4, 5])
-
-print(polyEval(diff_array, x_array))
 
 plt.show()
 
