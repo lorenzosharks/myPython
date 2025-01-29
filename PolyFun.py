@@ -151,7 +151,7 @@ plt.axis('scaled')
 plt.xlim(-10, 10)  # Set the limits of the x-axis
 plt.ylim(-10, 10)
 
-x = np.linspace(-1000, 1000, 200000)
+x = np.linspace(-100, 100, 2000000)
 
 y = polyEval(coeff_array, x)
 diffy = polyEval(diff_array, x)
