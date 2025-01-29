@@ -112,8 +112,6 @@ def polyDiff(coeff_array):
     
     return np.array(diff_coeff)
 
-
-
 #Main program
 
 #Asking the user for the degree of the polynomial
