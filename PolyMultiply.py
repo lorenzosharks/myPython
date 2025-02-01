@@ -21,7 +21,7 @@ def getCoeffs(order):
 
     while flag == False:
         try:
-            poly_degree = float(input(f"What is the highest degree of the {order} polynomial: "))
+            poly_degree = int(input(f"What is the highest degree of the {order} polynomial: "))
             try:
                 flag = True
             except ValueError as ve:
@@ -31,11 +31,11 @@ def getCoeffs(order):
     
     
     coeff_array = []
-    i=0
+    i=poly_degree
     proceed2 = False
 
     
-    while i <= poly_degree:
+    while i != -1:
         while proceed2 == False:
             try:
                 term = float(input(f"a_{i}: "))
@@ -48,10 +48,10 @@ def getCoeffs(order):
         
         if proceed2 == True:
             coeff_array.append(term)
-            i = i+1 
+            i = i-1 
             proceed2 = False
             
-    coeff_array = np.array(coeff_array)
+    coeff_array = list(reversed(coeff_array))
             
     return np.array(coeff_array)
 
@@ -62,17 +62,18 @@ def polyToStr(coeff_array):
     parameters: polynomial coefficient array
     return: returns the string representation of the polynomial equation
     """
-    i = 0
 
     sign = ""
     
     poly_degree = len(coeff_array) - 1
     
+    i = poly_degree
+    
     polyStr = ""
     
-    while i <= poly_degree:
-    
-        if i == 0 and coeff_array[0] >= 0:
+    while i != -1:
+        
+        if i == poly_degree and coeff_array[poly_degree] >= 0:
             sign = ""
         elif coeff_array[i] < 0:
             sign = "-"
@@ -81,7 +82,7 @@ def polyToStr(coeff_array):
     
         polyStr += f"{sign} {abs(coeff_array[i])}x^{i}" if i == 0 and coeff_array[0] > 0 else f" {sign} {abs(coeff_array[i])}x^{i}"
 
-        i = i+1
+        i = i-1
     
     return polyStr
 
@@ -90,19 +91,22 @@ def polyToStr(coeff_array):
 
 # #Main program
 
+#Prompting for coefficients of both polynomials
 coeff_arr1 = getCoeffs("first")
         
 coeff_arr2 = getCoeffs("second")
 
+
+#Calculating for the coefficients of the product
 pre_sum_array = np.outer(coeff_arr1, coeff_arr2)
 
 psa = pre_sum_array
 
-# Extract diagonals starting from the first element (1)
 diagonals = [np.flipud(psa).diagonal(offset=i).tolist() for i in range(-psa.shape[0] + 1, psa.shape[1])]
 
 sums = [sum(diagonal) for diagonal in diagonals]
 
+
+#Print statements
+print("This is the product of the two polynomials: ")
 print(polyToStr(sums))
-
-
