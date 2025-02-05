@@ -86,6 +86,16 @@ def polyToStr(coeff_array):
     
     return polyStr
 
+def polyMultiply(coeff_arr1, coeff_arr2):
+    pre_sum_array = np.outer(coeff_arr1, coeff_arr2)
+    
+    psa = pre_sum_array
+    
+    diagonals = [np.flipud(psa).diagonal(offset=i).tolist() for i in range(-psa.shape[0] + 1, psa.shape[1])]
+    
+    sums = [sum(diagonal) for diagonal in diagonals]
+    
+    return np.array(sums)
 # #--------------------------------------------------------------------------------------------------------#
 # #--------------------------------------------------------------------------------------------------------#
 
@@ -98,15 +108,8 @@ coeff_arr2 = getCoeffs("second")
 
 
 #Calculating for the coefficients of the product
-pre_sum_array = np.outer(coeff_arr1, coeff_arr2)
-
-psa = pre_sum_array
-
-diagonals = [np.flipud(psa).diagonal(offset=i).tolist() for i in range(-psa.shape[0] + 1, psa.shape[1])]
-
-sums = [sum(diagonal) for diagonal in diagonals]
 
 
 #Print statements
 print("This is the product of the two polynomials: ")
-print(polyToStr(sums))
+print(polyToStr(polyMultiply(coeff_arr1, coeff_arr2)))
