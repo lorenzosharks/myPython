@@ -10,12 +10,24 @@ import matplotlib.pyplot as plt
 np.set_printoptions(precision = 2, suppress = True)
 
 #Functions
-def getCoeffs(poly_degree):
+def getCoeffs():
     """
     summary: coefficients of the polynomial
     parameters: none
     return: return array of coeffecients
     """
+    
+    flag = False
+
+    while flag == False:
+        try:
+            poly_degree = float(input(f"What is the highest degree of the polynomial: "))
+            try:
+                flag = True
+            except ValueError as ve:
+                print("Enter a number.")
+        except ValueError as ve:
+            print("Enter a number.")
     
     coeff_array = []
     i=0
@@ -115,21 +127,10 @@ def polyDiff(coeff_array):
 
 #Main program
 
-#Asking the user for the degree of the polynomial (Includes user proofing)
-flag = False
 
-while flag == False:
-    try:
-        degree = float(input(f"What is the highest degree of the polynomial: "))
-        try:
-            flag = True
-        except ValueError as ve:
-            print("Enter a number.")
-    except ValueError as ve:
-        print("Enter a number.")
-        
+#Asking the user for the degree of the polynomial (Includes user proofing)
              
-coeff_array = getCoeffs(degree)
+coeff_array = getCoeffs()
 
 #The math part
 diff_array = polyDiff(coeff_array)
